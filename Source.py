@@ -61,9 +61,23 @@ class diffusion2(Source):
                     ut=np.sin(np.pi*x)*np.sin(np.pi*y)-1/2*np.sin(np.pi*x)*np.sin(2*np.pi*y)+np.pi/2*np.sin(2*np.pi*x)*np.sin(np.pi*y)*np.cos(np.pi*t)+2*np.pi/3*np.sin(2*np.pi*x)*np.sin(2*np.pi*y)*np.cos(2*np.pi*t)+4*np.pi/5*np.sin(4*np.pi*x)*np.sin(4*np.pi*y)*np.cos(4*np.pi*t)
                     us=-2*np.pi**2*np.sin(np.pi*x)*np.sin(np.pi*y)*t-5/4*np.pi**2*np.sin(np.pi*x)*np.sin(2*np.pi*y)*(1-t)-3/4*np.pi**2*np.sin(2*np.pi*x)*np.sin(np.pi*y)*np.sin(np.pi*t)-8/3*np.pi**2*np.sin(2*np.pi*x)*np.sin(2*np.pi*y)*np.sin(2*np.pi*t)-32/5*np.pi**2*np.sin(4*np.pi*x)*np.sin(4*np.pi*y)*np.sin(4*np.pi*t)
                     s[int(Maill.Noeuds[i]-1),j]=ut-us
-                    print("s",s[int(Maill.Noeuds[i]-1),j])
                     L=L+[Maill.Noeuds[i]]
         self.val=s
+    def solution_analytique(self,Maill,Tf,Npas):
+        n=max(Maill.Noeuds)
+        s_analy=np.zeros((n,Npas))
+        for j in range(Npas):
+            t=j*Tf/Npas
+            L=[]
+            for i in range(len(Maill.Noeuds)):
+                if Maill.Noeuds[i] not in L:
+                    x=Maill.Coord[int(3*i)]
+                    y=Maill.Coord[int(3*i+1)]
+                    s_analy[int(Maill.Noeuds[i]-1),j]= np.sin(np.pi*x)*np.sin(np.pi*y)*t +1/2 * np.sin(np.pi*x)*np.sin(2*np.pi*y)*(1-t) +1/2 * np.sin(2*np.pi*x)*np.sin(np.pi*y)*np.sin(np.pi*t)+ 1/3 * np.sin(2*np.pi*x)*np.sin(2*np.pi*y)*np.sin(2*np.pi*t)+ 1/5* np.sin(4*np.pi*x)*np.sin(4*np.pi*y)*np.sin(4*np.pi*t)
+                    L=L+[Maill.Noeuds[i]]
+        return s_analy
+    
+            
                     
                                 
         
